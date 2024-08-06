@@ -37,6 +37,7 @@ run_SCGD_alg = false
 run_EC_SCGD_alg = true
 
 time = Dates.format(Dates.now(), "yyyymmdd_HH_MM_SS")
+mkpath("./Data/")
 f_name = "./Data/" * case_name * "d" * string(n) * "_" * time
 
 # Run oracle solvers
