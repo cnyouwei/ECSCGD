@@ -4,13 +4,14 @@ This project involves running Julia implementation of stochastic gradient descen
 
 ## Table of Contents
 
-- [Table of Contents](#table-of-contents)
-- [Installation](#installation)
-  - [Installing Julia](#installing-julia)
-  - [Installing Julia Packages](#installing-julia-packages)
-- [Usage](#usage)
-  - [Running the Main File](#running-the-main-file)
-- [Files](#files)
+- [Expected value Constrained Stochastic Compositional Gradient Descent (EC-SCGD) algorithm](#expected-value-constrained-stochastic-compositional-gradient-descent-ec-scgd-algorithm)
+  - [Table of Contents](#table-of-contents)
+  - [Installation](#installation)
+    - [Installing Julia](#installing-julia)
+    - [Installing Julia Packages](#installing-julia-packages)
+  - [Usage](#usage)
+    - [Running the Main File](#running-the-main-file)
+  - [Files](#files)
 
 ## Installation
 
@@ -43,14 +44,13 @@ This project involves running Julia implementation of stochastic gradient descen
    - The required packages for this project include:
      - `LinearAlgebra`
      - `Random`
-     - `Statistics`
-     - `Plots`
+     - `Distributions`
      - `PyPlot`
      - `NPZ`
 
    - To install all required packages at once, you can use:
      ```julia
-     Pkg.add(["LinearAlgebra", "Random", "Statistics", "Plots", "PyPlot", "NPZ"])
+     Pkg.add(["LinearAlgebra", "Random", "Distributions", "PyPlot", "NPZ"])
      ```
 
 ## Usage

@@ -24,7 +24,7 @@ function run_unconstrained_oracleGD(mu, Sigma, gamma, delta; eta = 1e4, num_iter
 
     i = 0
     while abs(prev_obj_val - obj_val) > 1e-15 && i < num_iterations
-        eta = sqrt(i+1)
+        eta = max(1e2,sqrt(i+1)*5)
         x = iteration_unconstrained_oracle(x, mu, Sigma, gamma, eta)
 
         prev_obj_val = obj_val
@@ -59,7 +59,7 @@ function run_minimizeCVaR_oracleGD(mu, Sigma, delta, gamma; eta = 1e4, num_itera
 
     i = 0
     while abs(prev_obj_val - obj_val) > 1e-15 && i < num_iterations
-        eta = max(1e2, sqrt(i+1)/100)
+        eta = max(1e2,sqrt(i+1)*5)
         x = iteration_minimizeCVaR_oracleGD(x, mu, Sigma, delta, eta)
 
         prev_obj_val = obj_val
@@ -98,9 +98,9 @@ function run_CVaRconstrained_oracleGD(mu, Sigma, gamma, delta, xi; eta = 1e4, nu
     g = abs(CVaR(x, mu, Sigma, delta) - xi)
 
     i = 0
-    while (abs(prev_obj_val - obj_val) > 1e-15 || g) > 1e-8 && i < num_iterations
-        eta = max(1e2, sqrt(i+1)*10)
-        alpha = max(1e2, sqrt(i+1)/10)
+    while (abs(prev_obj_val - obj_val) > 1e-15 || g > 1e-15) && i < num_iterations
+        eta = max(1e2,sqrt(i+1)*5)
+        alpha = max(1e2, sqrt(i+1)*5)
         x, lam = iteration_CVaRconstrained_oracle(x, lam, mu, Sigma, gamma, delta, xi, alpha, eta)
 
         prev_obj_val = obj_val

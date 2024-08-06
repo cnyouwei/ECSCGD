@@ -40,7 +40,7 @@ function run_SCGD(mu, Sigma, L, gamma; eta=1e4, tau=1e4, num_iterations=Int(1e7)
     recording_idx = []
 
     record_log10_UB = log10(num_iterations)
-    record_log10_LB = 2
+    record_log10_LB = 0
     record_delta = 0.05
     record_counter = record_log10_LB
     
@@ -151,7 +151,7 @@ function run_EC_SCGD(mu, Sigma, L, gamma, delta, xi; eta=1e4, tau=1e4, num_itera
     recording_idx = []
 
     record_log10_UB = log10(num_iterations)
-    record_log10_LB = 2
+    record_log10_LB = 0
     record_delta = 0.05
     record_counter = record_log10_LB
 
@@ -183,23 +183,24 @@ end
 
 function plot_EC_SCGD(recording_idx, obj_path, cvar_path, optimal_value, optimal_cvar; num_iterations=Int(1e8), file_name="Test")
     plt.figure()
-    plt.loglog(recording_idx, (optimal_value .- obj_path), label="Obj. gap")
+    plt.loglog(recording_idx, (optimal_value .- obj_path), label="F(x*) - F(x)")
     plt.loglog(recording_idx, max.(0, cvar_path .- optimal_cvar), label="(CVaR - ξ)_+")
     plt.loglog(range(1.0, stop=num_iterations, length=100), 1 ./ sqrt.(range(1.0, stop=num_iterations, length=100)), "--", label="O(1/√t)")
-    plt.ylim(1e-4, 1)
+    plt.xlim(1, num_iterations)
+    plt.ylim(1/sqrt(num_iterations), 1)
     plt.grid()
     plt.legend()
     plt.xlabel("Iteration t")
     plt.ylabel("Gap")
-    plt.savefig(file_name * "_EC_SCGD.png", dpi=300, bbox_inches="tight")
+    plt.savefig(file_name * "_EC_SCGD.svg", dpi=300, bbox_inches="tight")
 
-    plt.figure()
-    plt.loglog(recording_idx, abs.(optimal_value .- obj_path), label="Abs. obj. gap")
-    plt.loglog(recording_idx, abs.(cvar_path .- optimal_cvar), label="|CVaR - ξ|")
-    plt.loglog(range(1.0, stop=num_iterations, length=100), 1 ./ sqrt.(range(1.0, stop=num_iterations, length=100)), "--", label="O(1/√t)")
-    plt.grid()
-    plt.legend()
-    plt.xlabel("Iteration t")
-    plt.ylabel("Gap")
-    plt.savefig(file_name * "_EC_SCGD_abs.png", dpi=300, bbox_inches="tight")
+    # plt.figure()
+    # plt.loglog(recording_idx, abs.(optimal_value .- obj_path), label="Abs. obj. gap")
+    # plt.loglog(recording_idx, abs.(cvar_path .- optimal_cvar), label="|CVaR - ξ|")
+    # plt.loglog(range(1.0, stop=num_iterations, length=100), 1 ./ sqrt.(range(1.0, stop=num_iterations, length=100)), "--", label="O(1/√t)")
+    # plt.grid()
+    # plt.legend()
+    # plt.xlabel("Iteration t")
+    # plt.ylabel("Gap")
+    # plt.savefig(file_name * "_EC_SCGD_abs.png", dpi=300, bbox_inches="tight")
 end

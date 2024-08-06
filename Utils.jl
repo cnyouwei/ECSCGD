@@ -1,7 +1,6 @@
 using LinearAlgebra
 using Random
 using Distributions
-using Plots
 
 function cholesky_decomposition(Sigma::Matrix{Float64})
     """

@@ -1,18 +1,12 @@
 include("gradient_descent_solvers.jl")
 include("EC_SCGD.jl")
 using Dates
-using LinearAlgebra
-using Random
 using Printf
 using NPZ
 
-n = 3  # dimension
+n = 10  # dimension
 gamma = 0.5  # coefficient for the fourth central moment
 delta = 0.05  # confidence level of the CVaR
-
-# mu = rand(n)
-# Sigma = generate_random_positive_definite_matrix(n)
-# case_name = "random_"
 
 mu = rand(n) * 2 .- 1
 Sigma = Matrix{Float64}(I(n))
@@ -25,6 +19,10 @@ case_name = "iid_"
 # Sigma = generate_toeplitz_matrix(vals)
 # case_name = "toeplitz_"
 
+# mu = rand(n)
+# Sigma = generate_random_positive_definite_matrix(n)
+# case_name = "random_"
+
 # decompose the covariance matrix for generating correlated multivariate normal
 L = cholesky_decomposition(Matrix(Sigma))
 
@@ -32,7 +30,7 @@ L = cholesky_decomposition(Matrix(Sigma))
 eps = 0.4   
 
 num_iter_oracle = Int(1e7)   # max number of iterations for oracle solvers
-num_iter_EC_SCGD = Int(1e8)  # max number of iterations for EC-SCGD
+num_iter_EC_SCGD = Int(1e7)  # max number of iterations for EC-SCGD
 print_interval = 100         # number of prints when running EC-SCGD
 
 run_SCGD_alg = false
