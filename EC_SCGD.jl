@@ -156,9 +156,10 @@ function run_EC_SCGD(mu, Sigma, L, gamma, delta, xi; eta=1e4, tau=1e4, num_itera
     record_counter = record_log10_LB
 
     for i in 1:num_iterations
-        eta = max(2e3, 20 * sqrt(i))
-        tau = max(5e4, i / 2)
-        alpha = max(3e2, 3*sqrt(i))
+        
+        eta = sqrt(i)*300      
+        tau = i/100
+        alpha = max(2e1,sqrt(i)/5)
 
         xu, y, lam = iteration_EC_SCGD(xu, y, lam, mu, Sigma, L, gamma, delta, xi, alpha, eta, tau)
         xu_cumulative += xu
@@ -192,7 +193,7 @@ function plot_EC_SCGD(recording_idx, obj_path, cvar_path, optimal_value, optimal
     plt.legend()
     plt.xlabel("Iteration t")
     plt.ylabel("Gap")
-    plt.savefig(file_name * "_EC_SCGD.svg", dpi=300, bbox_inches="tight")
+    plt.savefig(file_name * "_EC_SCGD.png", dpi=300, bbox_inches="tight")
 
     # plt.figure()
     # plt.loglog(recording_idx, abs.(optimal_value .- obj_path), label="Abs. obj. gap")
