@@ -1,4 +1,3 @@
-using PyPlot
 include("Utils.jl")
 
 """
@@ -157,9 +156,9 @@ function run_EC_SCGD(mu, Sigma, L, gamma, delta, xi; eta=1e4, tau=1e4, num_itera
 
     for i in 1:num_iterations
         
-        eta = sqrt(i)*300      
-        tau = i/100
-        alpha = max(2e1,sqrt(i)/5)
+        eta = sqrt(i)*7.5
+        tau = i/2
+        alpha = max(2e2,sqrt(i)*2)
 
         xu, y, lam = iteration_EC_SCGD(xu, y, lam, mu, Sigma, L, gamma, delta, xi, alpha, eta, tau)
         xu_cumulative += xu

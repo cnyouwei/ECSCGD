@@ -52,6 +52,21 @@ This project involves running Julia implementation of stochastic gradient descen
      ```julia
      Pkg.add(["LinearAlgebra", "Random", "Distributions", "PyPlot", "NPZ"])
      ```
+3. **Configure PyCall for plotting**
+   - To use the `PyPlot` package for plotting, you need to have Python installed on your system.
+   - Install the `PyCall` package in Julia by running:
+     ```julia
+     Pkg.add("PyCall")
+     ```
+    - Set the Python executable path in Julia by running:
+      ```julia
+      ENV["PYTHON"] = "/path/to/python"
+      Pkg.build("PyCall")
+      ```
+      Replace `/path/to/python` with the path to your Python executable. 
+      - Windows, this could be something like `C:\\Python39\\python.exe`
+      - Linux, it could be `/usr/bin/python3`.
+      - MacOS, it could be `/usr/local/bin/python3`.
 
 ## Usage
 
