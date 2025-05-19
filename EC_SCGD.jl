@@ -55,7 +55,7 @@ function run_SCGD(mu, Sigma, L, gamma; eta=1e4, tau=1e4, num_iterations=Int(1e7)
         end
 
         if i % Int(num_iterations / print_interval) == Int(num_iterations / print_interval) - 1
-            println("$(Int((i+1)/(num_iterations / 100)))%:  Obj = $(round.(objective_function(x_cumulative / i, mu, Sigma, gamma), digits=6)), CVaR = $(round.(CVaR(x_cumulative / i, mu, Sigma, delta), digits=6))")
+            println("$((i+1)/(num_iterations / 100))%:  Obj = $(round.(objective_function(x_cumulative / i, mu, Sigma, gamma), digits=6)), CVaR = $(round.(CVaR(x_cumulative / i, mu, Sigma, delta), digits=6))")
         end
     end
 
@@ -138,7 +138,7 @@ function iteration_EC_SCGD(xu, y, lam, mu, Sigma, L, gamma, delta, xi, alpha, et
     return xu_new, y_new, lam_new
 end
 
-function run_EC_SCGD(mu, Sigma, L, gamma, delta, xi; eta=1e4, tau=1e4, num_iterations=Int(1e7), print_interval = 100)
+function run_EC_SCGD(mu, Sigma, L, gamma, delta, xi; eta=1e4, tau=1e4, num_iterations=Int(1e7), print_interval = 100, obj_cvar_constrained = 0, cvar_cvar_constrained = 0)
     x = ones(length(mu)) / length(mu)
     xu = vcat(x, 0.0)
     y = vcat(xu, 0.0)
@@ -156,9 +156,13 @@ function run_EC_SCGD(mu, Sigma, L, gamma, delta, xi; eta=1e4, tau=1e4, num_itera
 
     for i in 1:num_iterations
         
-        eta = sqrt(i)*7.5
-        tau = i/2
-        alpha = max(2e2,sqrt(i)*2)
+        eta = max(3e4, sqrt(i)*300)
+        tau = max(1e3, i/50)
+        alpha = max(20*length(mu),sqrt(i)*length(mu)/50)
+        
+        # eta = max(1e4,sqrt(i)*100)
+        # tau = max(1e3,i/100)
+        # alpha = max(1e3,sqrt(i))
 
         xu, y, lam = iteration_EC_SCGD(xu, y, lam, mu, Sigma, L, gamma, delta, xi, alpha, eta, tau)
         xu_cumulative += xu
@@ -171,7 +175,7 @@ function run_EC_SCGD(mu, Sigma, L, gamma, delta, xi; eta=1e4, tau=1e4, num_itera
         end
 
         if i % Int(num_iterations / print_interval) == Int(num_iterations / print_interval) - 1
-            println("$(Int((i+1)/(num_iterations / 100)))%:  Obj = $(round.(objective_function(xu_cumulative[1:end-1] / (i+1), mu, Sigma, gamma), digits=6)), CVaR = $(round.(CVaR(xu_cumulative[1:end-1] / (i+1), mu, Sigma, delta), digits=6)), lam = $(round.(lam, digits=6))")
+            println("$((i+1)/(num_iterations / 100))%:  Obj* - Obj = $(round.(obj_cvar_constrained - objective_function(xu_cumulative[1:end-1] / (i+1), mu, Sigma, gamma), digits=6)),\tCVaR_UB - CVaR = $(round.(cvar_cvar_constrained - CVaR(xu_cumulative[1:end-1] / (i+1), mu, Sigma, delta), digits=6)),\tlam = $(round.(lam, digits=6))")
         end
     end
 
